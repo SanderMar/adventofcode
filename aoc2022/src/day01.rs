@@ -24,6 +24,11 @@ pub fn part1(elve_cals: &[u32]) -> u32 {
     }
 }
 
+#[aoc(day1, part2)]
+pub fn part2(elve_cals: &[u32]) -> u32 {
+    elve_cals[0..3].iter().sum()
+}
+
 #[cfg(test)]
 mod generator_tests {
     use super::*;
@@ -65,5 +70,22 @@ mod part1_tests {
     fn input_website() {
         let input = vec![24000, 11000, 10000, 5000, 4000];
         assert_eq!(part1(&input), 24000)
+    }
+}
+
+#[cfg(test)]
+mod part2_tests {
+    use super::*;
+
+    #[test]
+    fn three_entries() {
+        let input = vec![300,200,100];
+        assert_eq!(part2(&input), 600)
+    }
+
+    #[test]
+    fn input_website() {
+        let input = vec![24000, 11000, 10000, 6000, 4000];
+        assert_eq!(part2(&input), 45000)
     }
 }
