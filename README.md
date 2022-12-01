@@ -1,6 +1,6 @@
 # Advent of Code
 
-My [Advent of Code]() puzzle solutions.
+My [Advent of Code](https://adventofcode.com/) puzzle solutions.
 
 The solutions are made in rust.
 
