@@ -2,26 +2,22 @@ use aoc_runner_derive::{aoc, aoc_generator};
 
 #[aoc_generator(day1)]
 pub fn day1_gen(input: &str) -> Vec<u32> {
-    let elves: Vec<Vec<u32>> = input
+    let mut elves: Vec<u32> = input
         .split("\n\n")
         .map(|e| {
             e.split("\n")
                 .map(|cal| cal.parse::<u32>().unwrap())
-                .collect()
+                .sum::<u32>()
         })
         .collect();
 
-    let mut elves_cals: Vec<u32> = elves.iter().map(|e| e.iter().sum()).collect();
-    elves_cals.sort_by_key(|&c| std::cmp::Reverse(c));
-    elves_cals
+    elves.sort_by_key(|&c| std::cmp::Reverse(c));
+    elves
 }
 
 #[aoc(day1, part1)]
 pub fn part1(elve_cals: &[u32]) -> u32 {
-    match elve_cals.iter().max() {
-        Some(max) => return *max,
-        None => return 0,
-    }
+    elve_cals[0]
 }
 
 #[aoc(day1, part2)]

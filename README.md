@@ -11,7 +11,7 @@ I will try to solve as many puzzles as possible when I have time in between my s
 ## Running the code
 
 I use [cargo-aoc](https://lib.rs/crates/cargo-aoc) to run my code and download my inputs.
-My inputs are not included in the repository.
+My inputs are not included in the repository.  
 To run the code, you will have to install cargo-aoc: `cargo install cargo-aoc`.
 Then set up your session token using `cargo aoc credentials -s {token}`.
 Finally `cd` into the desired year, run `cargo aoc input -y <year> -d <day> to fetch the inputs`
