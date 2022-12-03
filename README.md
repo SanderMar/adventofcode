@@ -3,6 +3,7 @@
 My [Advent of Code](https://adventofcode.com/) puzzle solutions.
 
 The solutions are made in rust.
+As of 2022 day 3, nightly is used for array_chunk suppport.
 
 I am far from an experienced rust programmer.
 The puzzles are made for fun and to further familiarize myself with rust and test my knowledge.
