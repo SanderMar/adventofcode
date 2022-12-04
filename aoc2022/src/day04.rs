@@ -1,4 +1,6 @@
 use aoc_runner_derive::{aoc, aoc_generator};
+use std::cmp::{ max, min };
+use std::collections::HashSet;
 
 #[aoc_generator(day4)]
 pub fn day4_gen(input: &str) -> Vec<((i32, i32), (i32, i32))> {
@@ -28,6 +30,23 @@ pub fn part1(range_pair: &[((i32, i32), (i32, i32))]) -> u32 {
                 1
             } else {
                 0
+            }
+        })
+        .sum()
+}
+
+#[aoc(day4, part2)]
+pub fn part2(range_pair: &[((i32, i32), (i32, i32))]) -> u32 {
+    range_pair
+        .into_iter()
+        .map(|(r1, r2)| {
+            let ran1: HashSet<i32> = (r1.0..=r1.1).collect();
+            let ran2: HashSet<i32> = (r2.0..=r2.1).collect();
+            let intersect: Vec<&i32> = ran1.intersection(&ran2).collect();
+            if intersect.is_empty() {
+                0
+            } else {
+                1
             }
         })
         .sum()
@@ -79,5 +98,29 @@ mod part1_tests {
             ((2, 6), (4, 8)),
         ];
         assert_eq!(part1(&input), 2)
+    }
+}
+
+#[cfg(test)]
+mod part2_tests {
+    use super::*;
+
+    #[test]
+    fn single_item() {
+        let input = vec![((1, 4), (3, 5))];
+        assert_eq!(part2(&input), 1)
+    }
+
+    #[test]
+    fn input_website() {
+        let input = vec![
+            ((2, 4), (6, 8)),
+            ((2, 3), (4, 5)),
+            ((5, 7), (7, 9)),
+            ((2, 8), (3, 7)),
+            ((6, 6), (4, 6)),
+            ((2, 6), (4, 8)),
+        ];
+        assert_eq!(part2(&input), 4)
     }
 }
