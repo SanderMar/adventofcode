@@ -59,3 +59,41 @@ pub fn day5_gen(input: &str) -> (Vec<Move>, Vec<Vec<char>>) {
     let stacks = get_stacks(splitted.get(0).unwrap());
     (moves, stacks)
 }
+
+#[aoc(day5, part1)]
+pub fn part1(input: &(Vec<Move>, Vec<Vec<char>>)) -> String {
+    let moves = &input.0;
+    let mut stacks = input.1.clone();
+
+    let _: Vec<_> = moves
+        .iter()
+        .map(|&(c, f, t)| {
+            for _ in 0..c {
+                let top = stacks[f as usize - 1].pop().unwrap();
+                stacks[t as usize - 1].push(top);
+            }
+        })
+        .collect();
+
+    stacks
+        .iter()
+        .filter(|s| !s.is_empty())
+        .map(|s| s.last().unwrap())
+        .collect()
+}
+
+#[cfg(test)]
+mod part1_tests {
+    use super::*;
+
+    #[test]
+    fn input_website() {
+        let input = "    [D]    \n[N] [C]    \n[Z] [M] [P]\n 1   2   3 \n\n\
+                     move 1 from 2 to 1\n\
+                     move 3 from 1 to 3\n\
+                     move 2 from 2 to 1\n\
+                     move 1 from 1 to 2";
+        let generated = day5_gen(input);
+        assert_eq!(part1(&generated), "CMZ".to_owned())
+    }
+}
