@@ -82,6 +82,27 @@ pub fn part1(input: &(Vec<Move>, Vec<Vec<char>>)) -> String {
         .collect()
 }
 
+#[aoc(day5, part2)]
+pub fn part2(input: &(Vec<Move>, Vec<Vec<char>>)) -> String {
+    let moves = &input.0;
+    let mut stacks = input.1.clone();
+
+    let _: Vec<_> = moves
+        .iter()
+        .map(|&(c, f, t)| {
+            let l = stacks[f as usize - 1].len();
+            let mut top = stacks[f as usize - 1].split_off(l - c as usize);
+            stacks[t as usize - 1].append(&mut top);
+        })
+        .collect();
+
+    stacks
+        .iter()
+        .filter(|s| !s.is_empty())
+        .map(|s| s.last().unwrap())
+        .collect()
+}
+
 #[cfg(test)]
 mod part1_tests {
     use super::*;
@@ -95,5 +116,21 @@ mod part1_tests {
                      move 1 from 1 to 2";
         let generated = day5_gen(input);
         assert_eq!(part1(&generated), "CMZ".to_owned())
+    }
+}
+
+#[cfg(test)]
+mod part2_tests {
+    use super::*;
+
+    #[test]
+    fn input_website() {
+        let input = "    [D]    \n[N] [C]    \n[Z] [M] [P]\n 1   2   3 \n\n\
+                     move 1 from 2 to 1\n\
+                     move 3 from 1 to 3\n\
+                     move 2 from 2 to 1\n\
+                     move 1 from 1 to 2";
+        let generated = day5_gen(input);
+        assert_eq!(part2(&generated), "MCD".to_owned())
     }
 }
