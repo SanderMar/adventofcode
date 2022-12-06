@@ -2,10 +2,16 @@ use aoc_runner_derive::aoc;
 
 pub fn get_first_unique(input_stream: &[char], window_size: usize) -> usize {
     for (i, window) in input_stream.windows(window_size).enumerate() {
-        let mut ordered = window.to_owned();
-        ordered.sort();
-        ordered.dedup();
-        if ordered.len() == window_size {
+        let mut v: Vec<char> = Vec::new(); // Keep track of already found characters
+        // Check uniqueness of characters
+        for c in window.into_iter() {
+            if v.contains(c) {
+                break; // Stop on second occurance of character
+            } else {
+                v.push(*c);
+            }
+        }
+        if v.len() == window_size {
             return i + window_size;
         }
     }
