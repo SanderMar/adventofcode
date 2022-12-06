@@ -20,6 +20,14 @@ pub fn part1(input_stream: &str) -> usize {
     get_first_unique(&char_stream, window_size)
 }
 
+#[aoc(day6, part2)]
+pub fn part2(input_stream: &str) -> usize {
+    let char_stream: Vec<char> = input_stream.chars().collect();
+    let window_size = 14;
+
+    get_first_unique(&char_stream, window_size)
+}
+
 #[cfg(test)]
 mod part1_tests {
     use super::*;
@@ -48,5 +56,36 @@ mod part1_tests {
     fn input_website5() {
         let input = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw";
         assert_eq!(part1(input), 11)
+    }
+}
+
+#[cfg(test)]
+mod part2_tests {
+    use super::*;
+
+    #[test]
+    fn input_website1() {
+        let input = "mjqjpqmgbljsphdztnvjfqwrcgsmlb";
+        assert_eq!(part2(input), 19)
+    }
+    #[test]
+    fn input_website2() {
+        let input = "bvwbjplbgvbhsrlpgdmjqwftvncz";
+        assert_eq!(part2(input), 23)
+    }
+    #[test]
+    fn input_website3() {
+        let input = "nppdvjthqldpwncqszvftbrmjlhg";
+        assert_eq!(part2(input), 23)
+    }
+    #[test]
+    fn input_website4() {
+        let input = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg";
+        assert_eq!(part2(input), 29)
+    }
+    #[test]
+    fn input_website5() {
+        let input = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw";
+        assert_eq!(part2(input), 26)
     }
 }
