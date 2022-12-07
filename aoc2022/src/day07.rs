@@ -45,6 +45,27 @@ pub fn gen_day7(term_lines: &str) -> HashMap<String, Dir> {
     dir_map
 }
 
+/// Recursively get the size of a directory
+fn get_dir_size(map: &HashMap<String, Dir>, dir_name: &str) -> u32 {
+    let dir = map.get(dir_name).unwrap();
+    if dir.0.is_empty() {
+        return dir.1;
+    } else {
+        let mut sub_dir_size: u32 = 0;
+        for sdir in &dir.0 {
+            sub_dir_size += get_dir_size(map, sdir);
+        }
+        return sub_dir_size + dir.1;
+    }
+}
+
+#[aoc(day7, part1)]
+pub fn part1(map: &HashMap<String, Dir>) -> u32 {
+    map.keys()
+        .map(|k| get_dir_size(map, k))
+        .filter(|&size| size <= 100000u32)
+        .sum()
+}
 #[cfg(test)]
 mod generator_test {
     use super::*;
@@ -83,5 +104,38 @@ mod generator_test {
         expected.insert("//a/e/".to_owned(), (Vec::new(), 584));
         expected.insert("//d/".to_owned(), (Vec::new(), 24933642));
         assert_eq!(gen_day7(input), expected);
+    }
+}
+
+#[cfg(test)]
+mod part1_test {
+    use super::*;
+
+    #[test]
+    fn input_website() {
+        let input = "$ cd /\n\
+                     $ ls\n\
+                     dir a\n\
+                     14848514 b.txt\n\
+                     8504156 c.dat\n\
+                     dir d\n\
+                     $ cd a\n\
+                     $ ls\n\
+                     dir e\n\
+                     29116 f\n\
+                     2557 g\n\
+                     62596 h.lst\n\
+                     $ cd e\n\
+                     $ ls\n\
+                     584 i\n\
+                     $ cd ..\n\
+                     $ cd ..\n\
+                     $ cd d\n\
+                     $ ls\n\
+                     4060174 j\n\
+                     8033020 d.log\n\
+                     5626152 d.ext\n\
+                     7214296 k";
+        assert_eq!(part1(&gen_day7(input)), 95437)
     }
 }
