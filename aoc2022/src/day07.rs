@@ -66,6 +66,22 @@ pub fn part1(map: &HashMap<String, Dir>) -> u32 {
         .filter(|&size| size <= 100000u32)
         .sum()
 }
+
+#[aoc(day7, part2)]
+pub fn part2(map: &HashMap<String, Dir>) -> u32 {
+    let total_space = 70000000u32;
+    let needed_free = 30000000u32;
+    let total_used = get_dir_size(map, "//");
+    let max_used = total_space - needed_free;
+    let to_delete = total_used - max_used;
+
+    map.keys()
+        .map(|k| get_dir_size(map, k))
+        .filter(|&size| size >= to_delete)
+        .min()
+        .unwrap()
+}
+
 #[cfg(test)]
 mod generator_test {
     use super::*;
@@ -137,5 +153,38 @@ mod part1_test {
                      5626152 d.ext\n\
                      7214296 k";
         assert_eq!(part1(&gen_day7(input)), 95437)
+    }
+}
+
+#[cfg(test)]
+mod part2_test {
+    use super::*;
+
+    #[test]
+    fn input_website() {
+        let input = "$ cd /\n\
+                     $ ls\n\
+                     dir a\n\
+                     14848514 b.txt\n\
+                     8504156 c.dat\n\
+                     dir d\n\
+                     $ cd a\n\
+                     $ ls\n\
+                     dir e\n\
+                     29116 f\n\
+                     2557 g\n\
+                     62596 h.lst\n\
+                     $ cd e\n\
+                     $ ls\n\
+                     584 i\n\
+                     $ cd ..\n\
+                     $ cd ..\n\
+                     $ cd d\n\
+                     $ ls\n\
+                     4060174 j\n\
+                     8033020 d.log\n\
+                     5626152 d.ext\n\
+                     7214296 k";
+        assert_eq!(part2(&gen_day7(input)), 24933642)
     }
 }
