@@ -71,6 +71,58 @@ pub fn part1(grid: &[Vec<usize>]) -> usize {
         })
         .sum()
 }
+
+#[aoc(day8, part2)]
+pub fn part2(grid: &[Vec<usize>]) -> usize {
+    grid.into_iter()
+        .enumerate()
+        .map(|(x, line)| {
+            line.into_iter()
+                .enumerate()
+                .map(|(y, &tree)| {
+                    // We do not care about edge trees
+                    if x == 0 || x == grid.len() - 1 {
+                        return 0;
+                    } else if y == 0 || y == line.len() - 1 {
+                        return 0;
+                    }
+                    let mut count_left = 0usize;
+                    for i in (0..y).rev() {
+                        count_left += 1;
+                        if grid[x][i] >= tree {
+                            break;
+                        }
+                    }
+                    let mut count_right = 0usize;
+                    for i in (y + 1)..line.len() {
+                        count_right += 1;
+                        if grid[x][i] >= tree {
+                            break;
+                        }
+                    }
+                    let mut count_up = 0usize;
+                    for i in (0..x).rev() {
+                        count_up += 1;
+                        if grid[i][y] >= tree {
+                            break;
+                        }
+                    }
+                    let mut count_down = 0usize;
+                    for i in (x + 1)..grid.len() {
+                        count_down += 1;
+                        if grid[i][y] >= tree {
+                            break;
+                        }
+                    }
+                    count_left * count_right * count_up * count_down
+                })
+                .max()
+                .unwrap()
+        })
+        .max()
+        .unwrap()
+}
+
 #[cfg(test)]
 mod generator_tests {
     use super::*;
@@ -98,5 +150,16 @@ mod part1_tests {
     fn input_website() {
         let input = "30373\n25512\n65332\n33549\n35390";
         assert_eq!(part1(&gen_day8(input)), 21)
+    }
+}
+
+#[cfg(test)]
+mod part2_tests {
+    use super::*;
+
+    #[test]
+    fn input_website() {
+        let input = "30373\n25512\n65332\n33549\n35390";
+        assert_eq!(part2(&gen_day8(input)), 8)
     }
 }
