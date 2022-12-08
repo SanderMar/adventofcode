@@ -12,6 +12,65 @@ pub fn gen_day8(input: &str) -> Vec<Vec<usize>> {
         .collect()
 }
 
+#[aoc(day8, part1)]
+pub fn part1(grid: &[Vec<usize>]) -> usize {
+    grid.into_iter()
+        .enumerate()
+        .map(|(x, line)| {
+            line.into_iter()
+                .enumerate()
+                .map(|(y, &tree)| {
+                    if x == 0 || x == grid.len() - 1 {
+                        return 1;
+                    } else if y == 0 || y == line.len() - 1 {
+                        return 1;
+                    }
+                    let mut result = true;
+                    for i in 0..y {
+                        if grid[x][i] >= tree {
+                            result = false;
+                            break;
+                        }
+                    }
+                    if result {
+                        return 1;
+                    }
+                    result = true;
+                    for i in (y + 1)..line.len() {
+                        if grid[x][i] >= tree {
+                            result = false;
+                            break;
+                        }
+                    }
+                    if result {
+                        return 1;
+                    }
+                    result = true;
+                    for i in 0..x {
+                        if grid[i][y] >= tree {
+                            result = false;
+                            break;
+                        }
+                    }
+                    if result {
+                        return 1;
+                    }
+                    result = true;
+                    for i in (x + 1)..grid.len() {
+                        if grid[i][y] >= tree {
+                            result = false;
+                            break;
+                        }
+                    }
+                    if result {
+                        return 1;
+                    }
+                    0
+                })
+                .sum::<usize>()
+        })
+        .sum()
+}
 #[cfg(test)]
 mod generator_tests {
     use super::*;
@@ -28,5 +87,16 @@ mod generator_tests {
         ];
         let output = gen_day8(input);
         assert_eq!(output, excpected)
+    }
+}
+
+#[cfg(test)]
+mod part1_tests {
+    use super::*;
+
+    #[test]
+    fn input_website() {
+        let input = "30373\n25512\n65332\n33549\n35390";
+        assert_eq!(part1(&gen_day8(input)), 21)
     }
 }
