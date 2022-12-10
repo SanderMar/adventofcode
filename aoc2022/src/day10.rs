@@ -27,3 +27,29 @@ pub fn part1(register_values: &[isize]) -> isize {
         .map(|(i, reg_val)| (i + 1) as isize * reg_val)
         .sum()
 }
+
+#[aoc(day10, part2)]
+pub fn part2(register_values: &[isize]) -> isize {
+    println!("CRT screen:");
+    // Construct screen
+    let mut crt: Vec<Vec<char>> = vec![vec![' '; 40]; 6];
+    register_values
+        .into_iter()
+        .enumerate()
+        .filter(|&(i, _)| i < 240)
+        .for_each(|(i, &reg_val)| {
+            let crt_line = i / 40;
+            let crt_pixel = (i % 40) as isize;
+
+            if crt_pixel >= reg_val - 1 && crt_pixel <= reg_val + 1 {
+                crt[crt_line][crt_pixel as usize] = '#';
+            }
+        });
+    // Print screen
+    crt.into_iter().for_each(|line| {
+        let line_str: String = line.into_iter().collect();
+        println!("{}", line_str);
+    });
+    println!("");
+    0
+}
