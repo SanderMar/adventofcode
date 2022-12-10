@@ -1,3 +1,5 @@
+use aoc_runner_derive::{aoc, aoc_generator};
+
 type Move = (Pos, isize);
 
 #[non_exhaustive]
@@ -29,4 +31,15 @@ impl AddAssign for Pos {
     fn add_assign(&mut self, rhs: Self) {
         *self = Self(self.0 + rhs.0, self.1 + rhs.1);
     }
+}
+
+#[aoc_generator(day9)]
+pub fn gen_day9(input: &str) -> Vec<Move> {
+    input
+        .lines()
+        .map(|line| {
+            let split: Vec<&str> = line.split(" ").collect();
+            (Pos::get_dir(split[0]), split[1].parse::<isize>().unwrap())
+        })
+        .collect()
 }
