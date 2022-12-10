@@ -17,3 +17,13 @@ pub fn gen_day10(input: &str) -> Vec<isize> {
     });
     reg_val
 }
+
+#[aoc(day10, part1)]
+pub fn part1(register_values: &[isize]) -> isize {
+    register_values
+        .into_iter()
+        .enumerate()
+        .filter(|(i, _)| i + 1 >= 20 && ((i + 1) - 20) % 40 == 0)
+        .map(|(i, reg_val)| (i + 1) as isize * reg_val)
+        .sum()
+}
