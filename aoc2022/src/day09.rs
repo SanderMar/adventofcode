@@ -1,4 +1,5 @@
 use aoc_runner_derive::{aoc, aoc_generator};
+use std::{collections::HashSet, ops::AddAssign};
 
 type Move = (Pos, isize);
 
@@ -42,4 +43,31 @@ pub fn gen_day9(input: &str) -> Vec<Move> {
             (Pos::get_dir(split[0]), split[1].parse::<isize>().unwrap())
         })
         .collect()
+}
+
+#[aoc(day9, part1)]
+pub fn part1(moves: &[Move]) -> usize {
+    // 1 == head, 2 == tail
+    let mut head_pos: Pos = Pos(0, 0);
+    let mut tail_pos: Pos = Pos(0, 0);
+    let mut visited: HashSet<Pos> = HashSet::new();
+    visited.insert(tail_pos);
+
+    moves.into_iter().for_each(|&(dir, c)| {
+        for _ in 0..c {
+            head_pos += dir;
+            if tail_pos.dist_to(&head_pos) > 1 {
+                tail_pos += dir;
+                let diag: bool = tail_pos.0 - head_pos.0 != 0 && tail_pos.1 - head_pos.1 != 0;
+                if diag && dir.0 != 0 {
+                    tail_pos.1 += head_pos.1 - tail_pos.1;
+                } else if diag && dir.1 != 0 {
+                    tail_pos.0 += head_pos.0 - tail_pos.0;
+                }
+                visited.insert(tail_pos);
+            }
+        }
+    });
+
+    visited.into_iter().count()
 }
