@@ -1,5 +1,4 @@
 use aoc_runner_derive::{aoc, aoc_generator};
-use std::collections::HashSet;
 
 #[aoc_generator(day4)]
 pub fn day4_gen(input: &str) -> Vec<((i32, i32), (i32, i32))> {
@@ -10,10 +9,10 @@ pub fn day4_gen(input: &str) -> Vec<((i32, i32), (i32, i32))> {
                 .split(",")
                 .map(|p| {
                     let r: Vec<i32> = p.split("-").map(|v| v.parse::<i32>().unwrap()).collect();
-                    (r.get(0).cloned().unwrap(), r.get(1).cloned().unwrap())
+                    (r[0], r[1])
                 })
                 .collect();
-            (p.get(0).cloned().unwrap(), p.get(1).cloned().unwrap())
+            (p[0], p[1])
         })
         .collect()
 }
@@ -39,14 +38,8 @@ pub fn part2(range_pair: &[((i32, i32), (i32, i32))]) -> u32 {
     range_pair
         .into_iter()
         .map(|(r1, r2)| {
-            let ran1: HashSet<i32> = (r1.0..=r1.1).collect();
-            let ran2: HashSet<i32> = (r2.0..=r2.1).collect();
-            let intersect: Vec<&i32> = ran1.intersection(&ran2).collect();
-            if intersect.is_empty() {
-                0
-            } else {
-                1
-            }
+            // Checks for no intersection and negates
+            !(r1.1 < r2.0 || r2.1 < r1.0) as u32
         })
         .sum()
 }
