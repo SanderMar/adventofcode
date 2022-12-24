@@ -25,25 +25,20 @@ pub fn get_moves(moves: &str) -> Vec<Move> {
 
 /// Extract the initial stacks from the string representation
 pub fn get_stacks(stacks: &str) -> Vec<Vec<char>> {
-    // TODO: Look to improve this peice of code
-    //       Could be done by only expexting character at % 4 positions
     let mut iter = stacks.lines().rev();
     let column_line = iter.next().unwrap();
-    let indices: Vec<usize> = column_line
-        .char_indices()
-        .filter(|(_i, c)| c.is_numeric())
-        .map(|(i, _c)| i)
-        .collect();
-    let mut stack: Vec<Vec<char>> = vec![Vec::new(); indices.len()];
+    let size = (column_line.len() as f32 / 4f32).ceil() as usize;
+    let mut stack: Vec<Vec<char>> = vec![Vec::new(); size];
 
     let _: Vec<_> = iter
         .map(|l| {
-            let _: Vec<_> = indices
-                .iter()
+            let _: Vec<_> = l
+                .chars()
                 .enumerate()
-                .filter(|(_i, &s_i)| l.chars().nth(s_i).unwrap().is_alphabetic())
-                .map(|(v_i, &s_i)| {
-                    stack[v_i].push(l.chars().nth(s_i).unwrap());
+                .filter(|(_, c)| c.is_alphabetic()) // Only look at alphabetic chars
+                .map(|(i, c)| {
+                    let s_i = i / 4; // Get index of stack character is in
+                    stack[s_i].push(c);
                 })
                 .collect();
         })
